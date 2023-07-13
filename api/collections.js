@@ -11,7 +11,6 @@ const validateCollectionInput = require("../validation/collection");
 // @desc    Get all collection for NFTs
 // @access  Public
 router.get("/all", (req, res) => {
-  console.log("collection");
   Collection.find()
     .then((collections) => {
       res.json(collections);
