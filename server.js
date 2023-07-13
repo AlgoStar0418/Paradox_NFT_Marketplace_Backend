@@ -4,7 +4,11 @@ const bodyParser = require("body-parser");
 const passport = require("passport");
 const cors = require("cors");
 
-const pots = require("./api/pots");
+const users = require("./api/users");
+const collections = require("./api/collections");
+const nfts = require("./api/nfts");
+const salelists = require("./api/salelists");
+const bids = require("./api/bids");
 
 const app = express();
 
@@ -32,7 +36,11 @@ mongoose
 app.use(passport.initialize());
 
 // Use Routes
-app.use("/api/pots", pots);
+app.use("/api/users", users);
+app.use("/api/collections", collections);
+app.use("/api/nfts", nfts);
+app.use("/api/salelists", salelists);
+app.use("/api/bids", bids);
 
 const port = process.env.PORT || require("./config/keys").port;
 
