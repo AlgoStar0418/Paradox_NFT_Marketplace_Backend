@@ -25,7 +25,7 @@ router.post("/getItemByUserID", (req, res) => {
   Salelist.find({ user: req.body.userid })
     .populate("nft")
     .then((salelists) => {
-      res.json(salelists);
+      res.json({ salelists, currentDate: new Date() });
     })
     .catch((err) => {
       return res.status(400).json(err);
