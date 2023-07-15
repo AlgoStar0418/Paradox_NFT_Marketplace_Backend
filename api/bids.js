@@ -6,6 +6,8 @@ const router = express.Router();
 const Bid = require("../models/Bid");
 // User model
 const User = require("../models/User");
+// Salelist model
+const Salelist = require("../models/Salelist");
 
 // @route   POST api/bids/getBidsBySaleListID
 // @desc    Get bids by salelist id
@@ -49,6 +51,52 @@ router.post("/getExistBidsBySaleListAndUserID", (req, res) => {
   Bid.findOne({ salelist: req.body.salelistid, biduser: req.body.userid })
     .then((bids) => {
       res.json(bids);
+    })
+    .catch((err) => {
+      return res.status(400).json({ flag: false, msg: "Backend API Error!" });
+    });
+});
+
+// @route   POST api/bids/buy
+// @desc    Buy with user id and salelist id
+// @access  Public
+router.post("/buy", (req, res) => {
+  User.findOne({ _id: req.body.biduserid })
+    .then((user) => {
+      if (user) {
+        const newBid = new Bid({
+          salelist: req.body.salelistid,
+          biduser: req.body.biduserid,
+          bidamount: req.body.bidamount,
+        });
+
+        newBid
+          .save()
+          .then((bid) => {
+            Salelist.findOneAndUpdate(
+              { _id: req.body.salelistid },
+              { soldout_flag: true },
+              { new: true }
+            )
+              .then((salelist) => {
+                res.json({ flag: true, msg: "Success" });
+              })
+              .catch((err) => {
+                return res
+                  .status(400)
+                  .json({ flag: false, msg: "Backend API Error!" });
+              });
+          })
+          .catch((err) => {
+            return res
+              .status(400)
+              .json({ flag: false, msg: "Backend API Error!" });
+          });
+      } else {
+        return res
+          .status(400)
+          .json({ flag: false, msg: "Current User is not Exist!" });
+      }
     })
     .catch((err) => {
       return res.status(400).json({ flag: false, msg: "Backend API Error!" });
