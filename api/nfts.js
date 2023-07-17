@@ -55,9 +55,10 @@ router.post("/getNFTItemByID", (req, res) => {
 // @route   POST api/nfts/getNFTItemsbyCollectionID
 // @desc    Get NFT Items by collection id
 // @access  Public
-router.post("/getNFTItemsbyCollectionID", (req, res) => {
-  NFT.find({ collections: req.body.collectionID })
-    .then((nfts) => {
+router.post("/getNFTItemsbyCollectionID", async (req, res) => {
+  Salelist.find({ collections: req.body.collectionID })
+    .populate("nft")
+    .then(async (nfts) => {
       res.json(nfts);
     })
     .catch((err) => {

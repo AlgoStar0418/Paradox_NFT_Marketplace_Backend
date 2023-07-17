@@ -67,6 +67,7 @@ router.post("/addsalelistitem", (req, res) => {
           price: req.body.price,
           duration: req.body.duration,
           nft: req.body.nftid,
+          collections: req.body.collectionid,
           user: req.body.userid,
           starting_time: new Date(),
           expired_time: req.body.sale_type === 1 ? new Date() : today,

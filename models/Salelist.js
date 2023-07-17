@@ -18,6 +18,10 @@ const SalelistSchema = new Schema({
   duration: {
     type: String,
   },
+  collections: {
+    type: Schema.Types.ObjectId,
+    ref: "collections",
+  },
   nft: {
     type: Schema.Types.ObjectId,
     ref: "nfts",
