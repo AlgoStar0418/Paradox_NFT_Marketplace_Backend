@@ -3,6 +3,8 @@ const router = express.Router();
 
 // Collection model
 const Collection = require("../models/Collection");
+// Salelist model
+const Salelist = require("../models/Salelist");
 
 // Validation Collection Input
 const validateCollectionInput = require("../validation/collection");
@@ -11,9 +13,17 @@ const validateCollectionInput = require("../validation/collection");
 // @desc    Get all collection for NFTs
 // @access  Public
 router.get("/all", (req, res) => {
-  Collection.find()
-    .then((collections) => {
-      res.json(collections);
+  Salelist.find()
+    .populate([
+      {
+        path: "nft",
+        populate: {
+          path: "collections",
+        },
+      },
+    ])
+    .then((salelists) => {
+      res.json(salelists);
     })
     .catch((err) => {
       return res.status(400).json({ flag: false, msg: "Backend API Error!" });
